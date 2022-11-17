@@ -1,13 +1,29 @@
 // Require the framework and instantiate it
+import path from 'path';
+import { fileURLToPath } from 'url';
 import f from 'fastify';
+import formbody from '@fastify/formbody';
+import staticFiles from '@fastify/static';
+
 const fastify = f({ logger: true });
+
+// constants
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// plugins
+fastify.register(formbody);
+fastify.register(staticFiles, {
+    root: path.join(__dirname, 'public'),
+    prefix: '/public/',
+});
 
 // import routes
 import { getForm, postForm } from './routes/form.mjs';
 
 // Declare a route
 fastify.get('/', async (request, reply) => {
-    return { hello: 'world' };
+    return { hello: 'world!!!' };
 });
 
 fastify.get('/form', getForm);

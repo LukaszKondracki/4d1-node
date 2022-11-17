@@ -1,4 +1,4 @@
-import {readFile} from 'fs/promises';
+import {readFile, writeFile} from 'fs/promises';
 
 export async function getForm(request, response) {
 
@@ -11,10 +11,8 @@ export async function getForm(request, response) {
     return html;
 }
 
-export function postForm(request, response) {
-    const {text} = request.body;
+export async function postForm(request, response) {
+    const res = await writeFile('data.json', JSON.stringify(request.body), {flag: 'w'});
 
-    return {
-        text: text
-    };
+    return request.body.filter(x => x.name !== '');
 }
