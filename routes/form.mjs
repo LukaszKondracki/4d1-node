@@ -1,4 +1,5 @@
-import {readFile, writeFile} from 'fs/promises';
+import { existsSync } from 'fs';
+import { readFile, writeFile } from 'fs/promises';
 
 export async function getForm(request, response) {
 
@@ -11,8 +12,36 @@ export async function getForm(request, response) {
     return html;
 }
 
-export async function postForm(request, response) {
-    const res = await writeFile('data.json', JSON.stringify(request.body), {flag: 'w'});
+const filename = 'data.json';
 
-    return request.body.filter(x => x.name !== '');
+export async function postForm(request, response) {
+
+    if (!existsSync(filename)) {
+        await writeFile(filename, JSON.stringify([]), { flag: 'wx' });
+    }
+
+    const file = await readFile(filename);
+
+    let fileData = JSON.parse(file);
+
+    fileData = [
+        ...fileData,
+        ...[{
+            body: request.body.body,
+            label: request.body.label,
+            date: new Date()
+        }]
+    ];
+
+    await writeFile(filename, JSON.stringify(fileData, null, 2));
+
+    return fileData;
+}
+
+export async function getAllTodos(request, response) {
+    const file = await readFile(filename);
+
+    let fileData = JSON.parse(file);
+
+    return fileData;
 }

@@ -1,11 +1,19 @@
 const form = document.getElementById('form');
+const todos = document.getElementById('todos');
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const data = Object.values(form).map(x => {
-        return { name: x.name, value: x.value }
-    });
+    const fields = Object.values(form);
+
+    const data = fields
+        .map(x => {
+            return { name: x.name, value: x.value }
+        })
+        .filter(x => x.name !== '')
+        .reduce((prev, current) => {
+            return { ...prev, ...{ [current.name]: current.value } }
+        }, {});
 
     const result = await fetch('/form', {
         method: 'POST',
@@ -17,6 +25,15 @@ form.addEventListener('submit', async (e) => {
 
     const res = await result.json();
 
-    console.log(res);
+    // clear form
+    for (const field of fields) {
+        field.value = null;
+    }
+
+    // Create todos
+    todos.innerHTML = '';
+    for (const todo of res) {
+        todos.append(createTodo(todo.body, todo.date, todo.label));
+    }
 
 });

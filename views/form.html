@@ -10,11 +10,28 @@
     <h1>Hello World!!!</h1>
 
     <form id="form" action="" method="POST">
-        <input type="text" name="text">
-        <input type="number" name="count">
-        <input type="submit">
+
+        <label for="body">Body</label>
+        <textarea name="body" id="body" cols="30" rows="2"></textarea>
+
+        <label for="label">Label</label>
+        <select name="label" id="label">
+            <option value="" selected>None</option>
+            <option value="important">Important</option>
+            <option value="backlog">Backlog</option>
+            <option value="optional">Optional</option>
+        </select>
+
+        <button type="submit">Create a todo</button>
+
     </form>
 
+    <pre id="output"></pre>
+
+    <div id="todos"></div>
+
+    <script src="/public/js/src/todoElement.js"></script>
+    <script src="/public/js/src/todos.js"></script>
     <script src="/public/js/src/form.js"></script>
 </body>
 </html>

@@ -19,7 +19,7 @@ fastify.register(staticFiles, {
 });
 
 // import routes
-import { getForm, postForm } from './routes/form.mjs';
+import { getAllTodos, getForm, postForm } from './routes/form.mjs';
 
 // Declare a route
 fastify.get('/', async (request, reply) => {
@@ -28,6 +28,7 @@ fastify.get('/', async (request, reply) => {
 
 fastify.get('/form', getForm);
 fastify.post('/form', postForm);
+fastify.get('/todos', getAllTodos);
 
 
 // Run the server!
